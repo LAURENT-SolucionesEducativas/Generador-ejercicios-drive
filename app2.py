@@ -5,8 +5,9 @@ import random
 st.set_page_config(page_title="Evaluación por DNI", page_icon="🧠")
 # Cabecera institucional
 st.markdown("""
-<h1 style='text-align: center; color: #2c3e50;'>Consorcio Educativo LAURENT</h1>
+<h3 style='text-align: center; color: #566573;'>Consorcio Educativo De Jesús</h3>
 """, unsafe_allow_html=True)
+
 
 # Clasificación por DNI
 clasificacion_dni = {
