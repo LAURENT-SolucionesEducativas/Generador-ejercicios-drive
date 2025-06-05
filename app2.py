@@ -96,8 +96,13 @@ else:
 st.markdown("""
 <hr style='margin-top: 50px;'>
 <h3 style='text-align: center; color: #34495e; font-size: 20px;'>
-🔷 LAURENT - Soluciones Tecnológicas Educativas 🔷 Contáctanos: 927794127
+🔷 LAURENT - Soluciones Tecnológicas Educativas 🔷
 </h3>
 """, unsafe_allow_html=True)
-
+st.markdown("""
+<hr style='margin-top: 30px;'>
+<h3 style='text-align: center; color: #34495e; font-size: 20px;'>
+Contáctanos 927794127
+</h3>
+""", unsafe_allow_html=True)
 
