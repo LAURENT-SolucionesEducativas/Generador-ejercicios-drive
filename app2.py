@@ -5,7 +5,7 @@ import random
 st.set_page_config(page_title="Evaluación por DNI", page_icon="🧠")
 # Cabecera institucional
 st.markdown("""
-<h3 style='text-align: center; color: #566573;'>Consorcio Educativo De Jesús</h3>
+<h3 style='text-align: center; color: #566573;'>Consorcio Educativo "Escuela De Jesús"</h3>
 """, unsafe_allow_html=True)
 
 
@@ -19,10 +19,10 @@ clasificacion_dni = {
 
 # Nombres asociados al DNI
 nombres_dni = {
-    "12345678": "Lucía Martínez",
-    "87654321": "Carlos G. Suárez",
-    "46850511": "Ana T. Rodríguez",
-    "44332211": "Luis M. Vargas",
+    "12345678": "Iván Limaya R.",
+    "87654321": "Carlos Gillen S.",
+    "46850511": "Ladislao Mamani P.",
+    "44332211": "Luis Medina T.",
 }
 
 # Cargar ejercicios desde Google Sheets
@@ -91,3 +91,12 @@ if dni:
         st.warning("❗ Este DNI no está clasificado por el profesor.")
 else:
     st.info("Por favor, ingresa tu DNI para comenzar.")
+
+# Pie de página institucional
+st.markdown("""
+<hr style='margin-top: 50px;'>
+<p style='text-align: center; color: #7f8c8d; font-size: 14px;'>
+LAURENT - Soluciones Tecnológicas Educativas
+</p>
+""", unsafe_allow_html=True)
+
