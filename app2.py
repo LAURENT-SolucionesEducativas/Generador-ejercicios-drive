@@ -95,8 +95,9 @@ else:
 # Pie de página institucional
 st.markdown("""
 <hr style='margin-top: 50px;'>
-<p style='text-align: center; color: #7f8c8d; font-size: 14px;'>
-LAURENT - Soluciones Tecnológicas Educativas
-</p>
+<h3 style='text-align: center; color: #34495e; font-size: 20px;'>
+🔷 LAURENT - Soluciones Tecnológicas Educativas 🔷
+</h3>
 """, unsafe_allow_html=True)
+
 
