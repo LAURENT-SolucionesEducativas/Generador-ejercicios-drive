@@ -21,7 +21,7 @@ def cargar_ejercicios():
 
 df_ejercicios = cargar_ejercicios()
 
-st.title("📘 Evaluación Automática por DNI")
+st.title("📘 Tarea de R.M")
 
 dni = st.text_input("🔑 Ingresa tu DNI")
 
