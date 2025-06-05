@@ -12,6 +12,14 @@ clasificacion_dni = {
     "44332211": "F",
 }
 
+# Nombres asociados al DNI
+nombres_dni = {
+    "12345678": "Lucía Martínez",
+    "87654321": "Carlos G. Suárez",
+    "11223344": "Ana T. Rodríguez",
+    "44332211": "Luis M. Vargas",
+}
+
 # Cargar ejercicios desde Google Sheets
 @st.cache_data
 def cargar_ejercicios():
@@ -27,8 +35,11 @@ dni = st.text_input("🔑 Ingresa tu DNI")
 
 if dni:
     nivel = clasificacion_dni.get(dni)
+    nombre_completo = nombres_dni.get(dni, "Alumno desconocido")
+
     if nivel:
-        st.success(f"Estás clasificado en el nivel: **{nivel}**")
+        st.success(f"👤 Bienvenido/a: **{nombre_completo}**")
+        st.success(f"📘 Estás clasificado en el nivel: **{nivel}**")
 
         if "dni_actual" not in st.session_state or st.session_state.dni_actual != dni:
             ejercicios_nivel = df_ejercicios[df_ejercicios["Nivel"] == nivel]
