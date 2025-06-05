@@ -4,73 +4,63 @@ import random
 
 st.set_page_config(page_title="Evaluación por DNI", page_icon="🧠")
 
-# Clasificación del alumno por DNI
+# 1. Clasificación por DNI
 clasificacion_dni = {
-    "12345678": "Fácil",
-    "87654321": "Medio",
-    "11223344": "Difícil",
-    "44332211": "Fácil",
+    "12345678": "F",
+    "87654321": "M",
+    "11223344": "D",
+    "44332211": "F",
+    # Agrega más DNIs
 }
 
-# Leer ejercicios desde tu Google Sheet
-sheet_id = "1oLZCNVpCbPBQYKIrLEFxouqY5SujGy5H"
-sheet_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv"
+# 2. Cargar ejercicios desde Google Sheets
+@st.cache_data
+def cargar_ejercicios():
+    url_csv = "https://docs.google.com/spreadsheets/d/1oLZCNVpCbPBQYKIrLEFxouqY5SujGy5H/export?format=csv"
+    try:
+        df = pd.read_csv(url_csv)
+        df = df[["Enunciado", "Respuesta", "Nivel"]]  # Validar columnas
+        return df
+    except Exception as e:
+        st.error("❌ No se pudo cargar la base de datos. Verifica que el enlace esté en modo público.")
+        return pd.DataFrame()
 
-try:
-    df = pd.read_csv(sheet_url)
+df_ejercicios = cargar_ejercicios()
 
-    # Traducir niveles abreviados a nombres completos
-    nivel_map = {"F": "Fácil", "M": "Medio", "D": "Difícil"}
-    df["Nivel"] = df["Nivel"].map(nivel_map)
-
-except Exception as e:
-    st.error("❌ No se pudo cargar la base de datos. Verifica que el documento esté en modo público y tenga las columnas necesarias.")
-    st.stop()
-
-# Agrupar ejercicios por nivel
-ejercicios_por_nivel = {
-    nivel: df[df["Nivel"] == nivel].to_dict("records")
-    for nivel in df["Nivel"].unique()
-}
-
-# Interfaz
+# 3. Interfaz
 st.title("📘 Evaluación Automática por DNI")
 dni = st.text_input("🔑 Ingresa tu DNI")
-
-# Evitar recargar preguntas al presionar Enter
-if "ejercicios" not in st.session_state:
-    st.session_state.ejercicios = []
-    st.session_state.nivel = None
 
 if dni:
     nivel = clasificacion_dni.get(dni)
     if nivel:
         st.success(f"Estás clasificado en el nivel: **{nivel}**")
 
-        if not st.session_state.ejercicios or st.session_state.nivel != nivel:
-            st.session_state.ejercicios = random.sample(
-                ejercicios_por_nivel[nivel], 5
-            )
-            st.session_state.nivel = nivel
+        # Guardar ejercicios en session_state para evitar cambios con cada recarga
+        if "ejercicios_asignados" not in st.session_state:
+            ejercicios_filtrados = df_ejercicios[df_ejercicios["Nivel"] == nivel].sample(5).to_dict("records")
+            st.session_state.ejercicios_asignados = ejercicios_filtrados
 
-        with st.form(key="evaluacion"):
+        ejercicios = st.session_state.ejercicios_asignados
+
+        with st.form("form_evaluacion"):
             respuestas_usuario = []
-            for i, ejercicio in enumerate(st.session_state.ejercicios):
-                respuesta = st.text_input(
-                    f"{i+1}. {ejercicio['Enunciado']}", key=f"resp_{i}"
-                )
-                respuestas_usuario.append((respuesta, ejercicio["Respuesta"]))
+            for i, ejercicio in enumerate(ejercicios):
+                resp = st.text_input(f"{i+1}. {ejercicio['Enunciado']}", key=f"resp_{i}")
+                respuestas_usuario.append(resp)
             enviar = st.form_submit_button("📤 Enviar respuestas")
 
         if enviar:
             aciertos = 0
-            for i, (user_resp, correcta) in enumerate(respuestas_usuario):
-                if user_resp.strip() == str(correcta).strip():
+            for i, (user_resp, ejercicio) in enumerate(zip(respuestas_usuario, ejercicios)):
+                correcta = str(ejercicio["Respuesta"]).strip()
+                if user_resp.strip() == correcta:
                     st.success(f"{i+1}. ✅ Correcto")
                     aciertos += 1
                 else:
                     st.error(f"{i+1}. ❌ Incorrecto. Respuesta correcta: {correcta}")
             st.info(f"🔎 Puntaje final: {aciertos}/5")
+
     else:
         st.warning("❗ Este DNI no está clasificado por el profesor.")
 else:
