@@ -3,9 +3,11 @@ import pandas as pd
 import random
 
 st.set_page_config(page_title="Evaluación por DNI", page_icon="🧠")
-# Cabecera institucional
+# Cabecera institucional (más pequeña, más clara, responsive)
 st.markdown("""
-<h3 style='text-align: center; color: #566573;'>Consorcio Educativo "Escuela De Jesús"</h3>
+<div style='text-align: center;'>
+    <h2 style='color: #34495e; font-size: 26px;'>Consorcio Educativo De Jesús</h2>
+</div>
 """, unsafe_allow_html=True)
 
 
