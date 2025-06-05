@@ -4,9 +4,10 @@ import random
 
 st.set_page_config(page_title="Evaluación por DNI", page_icon="🧠")
 
+# Cabecera institucional (más pequeña, más clara, responsive)
 st.markdown("""
 <div style='text-align: center;'>
-    <h1 style='font-size: 6vw; color: #2c3e50; margin-bottom: 0.5em;'>Consorcio Educativo "Escuela De Jesús"</h1>
+    <h2 style='color: #34495e; font-size: 26px;'>Consorcio Educativo De Jesús</h2>
 </div>
 """, unsafe_allow_html=True)
 
