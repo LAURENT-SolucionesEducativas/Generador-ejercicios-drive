@@ -7,7 +7,7 @@ st.set_page_config(page_title="Evaluación por DNI", page_icon="🧠")
 # Cabecera institucional (más pequeña, más clara, responsive)
 st.markdown("""
 <div style='text-align: center;'>
-    <h2 style='color: #34495e; font-size: 26px;'>Consorcio Educativo De Jesús</h2>
+    <h2 style='color: #34495e; font-size: 26px;'>"Escuela De Jesús"</h2>
 </div>
 """, unsafe_allow_html=True)
 
