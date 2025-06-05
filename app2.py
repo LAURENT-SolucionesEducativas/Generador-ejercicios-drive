@@ -6,7 +6,7 @@ st.set_page_config(page_title="Evaluación por DNI", page_icon="🧠")
 
 st.markdown("""
 <div style='text-align: center;'>
-    <h1 style='font-size: 6vw; color: #2c3e50; margin-bottom: 0.5em;'>Consorcio Educativo De Jesús</h1>
+    <h1 style='font-size: 6vw; color: #2c3e50; margin-bottom: 0.5em;'>Consorcio Educativo "Escuela De Jesús"</h1>
 </div>
 """, unsafe_allow_html=True)
 
