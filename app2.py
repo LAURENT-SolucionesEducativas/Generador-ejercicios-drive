@@ -25,51 +25,48 @@ st.title("📘 Evaluación Automática por DNI")
 
 dni = st.text_input("🔑 Ingresa tu DNI")
 
-# Verifica que exista el DNI
 if dni:
     nivel = clasificacion_dni.get(dni)
     if nivel:
         st.success(f"Estás clasificado en el nivel: **{nivel}**")
 
-        # Si aún no se han asignado ejercicios
-        if "ejercicios_asignados" not in st.session_state or st.session_state.get("dni_guardado") != dni:
-            ejercicios_filtrados = df_ejercicios[df_ejercicios["Nivel"] == nivel]
-            st.session_state.ejercicios_asignados = ejercicios_filtrados.sample(5).to_dict("records")
+        # Solo cargar ejercicios una vez por DNI
+        if "dni_actual" not in st.session_state or st.session_state.dni_actual != dni:
+            ejercicios_nivel = df_ejercicios[df_ejercicios["Nivel"] == nivel]
+            st.session_state.ejercicios = ejercicios_nivel.sample(5).to_dict("records")
             st.session_state.respuestas = [""] * 5
-            st.session_state.resultados_mostrados = False
             st.session_state.resultados = []
-            st.session_state.aciertos = 0
-            st.session_state.dni_guardado = dni
+            st.session_state.mostrar_resultados = False
+            st.session_state.dni_actual = dni
 
-        ejercicios = st.session_state.ejercicios_asignados
-
-        # Formulario
-        with st.form("formulario"):
-            for i, ejercicio in enumerate(ejercicios):
+        # Mostrar preguntas
+        with st.form("evaluacion_form"):
+            for i, ejercicio in enumerate(st.session_state.ejercicios):
                 st.session_state.respuestas[i] = st.text_input(
                     f"{i+1}. {ejercicio['Enunciado']}",
                     value=st.session_state.respuestas[i],
-                    key=f"resp_{i}"
+                    key=f"input_{i}"
                 )
             enviar = st.form_submit_button("📤 Enviar respuestas")
 
         if enviar:
-            st.session_state.resultados = []
+            resultados = []
             aciertos = 0
-            for i, (resp, ejercicio) in enumerate(zip(st.session_state.respuestas, ejercicios)):
+            for i, (resp, ejercicio) in enumerate(zip(st.session_state.respuestas, st.session_state.ejercicios)):
                 correcta = str(ejercicio["Respuesta"]).strip()
                 if resp.strip() == correcta:
-                    st.session_state.resultados.append((i+1, True, correcta))
+                    resultados.append((i + 1, True, correcta))
                     aciertos += 1
                 else:
-                    st.session_state.resultados.append((i+1, False, correcta))
+                    resultados.append((i + 1, False, correcta))
+            st.session_state.resultados = resultados
             st.session_state.aciertos = aciertos
-            st.session_state.resultados_mostrados = True
+            st.session_state.mostrar_resultados = True
 
-        # Mostrar resultados solo si se presionó el botón
-        if st.session_state.resultados_mostrados:
-            for i, es_correcto, correcta in st.session_state.resultados:
-                if es_correcto:
+        # Mostrar resultados solo después del botón
+        if st.session_state.mostrar_resultados:
+            for i, correcto, correcta in st.session_state.resultados:
+                if correcto:
                     st.success(f"{i}. ✅ Correcto")
                 else:
                     st.error(f"{i}. ❌ Incorrecto. Respuesta correcta: {correcta}")
