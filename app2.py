@@ -8,7 +8,7 @@ st.set_page_config(page_title="Evaluación por DNI", page_icon="🧠")
 clasificacion_dni = {
     "12345678": "F",
     "87654321": "M",
-    "11223344": "D",
+    "46850511": "D",
     "44332211": "F",
 }
 
@@ -16,7 +16,7 @@ clasificacion_dni = {
 nombres_dni = {
     "12345678": "Lucía Martínez",
     "87654321": "Carlos G. Suárez",
-    "11223344": "Ana T. Rodríguez",
+    "46850511": "Ana T. Rodríguez",
     "44332211": "Luis M. Vargas",
 }
 
